@@ -1,0 +1,39 @@
+#Step 1: Create an IAM Group
+aws iam create-group --group-name devops-lab-group
+
+#Step 2: Create a User and Add to Group
+aws iam create-user --user-name devops-lab-user
+aws iam add-user-to-group --user-name devops-lab-user --group-name devops-lab-group
+
+#Step 3: Attach Policy to Group
+Let’s attach PowerUserAccess for now (you can later restrict to custom scope):
+aws iam attach-group-policy \
+  --group-name devops-lab-group \
+  --policy-arn arn:aws:iam::aws:policy/PowerUserAccess
+
+#Step 4: Create an IAM Role with Trust Policy
+#Save this to a file called trust-policy.json inside Gitpod:
+
+#Replace <YOUR_ACCOUNT_ID> with your 12-digit AWS Account ID (run aws sts get-caller-identity to find it).
+#Now create the role:
+aws iam create-role \
+  --role-name devops-lab-role \
+  --assume-role-policy-document file://trust-policy.json
+
+#Step 5: Attach a Policy to the Role
+aws iam attach-role-policy \
+  --role-name devops-lab-role \
+  --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+
+#Optional Verification (Confirm)
+aws iam list-users
+aws iam list-groups
+aws iam list-roles | grep devops
+
+#Cleanup (if needed later):
+aws iam detach-group-policy --group-name devops-lab-group --policy-arn arn:aws:iam::aws:policy/PowerUserAccess
+aws iam delete-user --user-name devops-lab-user
+aws iam delete-group --group-name devops-lab-group
+aws iam detach-role-policy --role-name devops-lab-role --policy-arn arn:aws:iam::aws:policy/AdministratorAccess
+aws iam delete-role --role-name devops-lab-role
+
