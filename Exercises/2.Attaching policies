@@ -1,0 +1,33 @@
+#1.Attach a Policy to a User
+aws iam attach-user-policy \
+  --user-name devops-lab-user \
+  --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+#2.Attach a Policy to a Group
+aws iam attach-group-policy \
+  --group-name devops-lab-group \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+
+#3.Attach a Policy to a Role
+aws iam attach-role-policy \
+  --role-name devops-lab-role \
+  --policy-arn arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
+
+#Hands-On Testing (Optional)
+aws iam simulate-principal-policy \
+  --policy-source-arn arn:aws:iam::208507495576:user/DevOpsUser \
+  --action-names s3:ListBucket \
+  --resource-arns arn:aws:s3:::your-bucket-name
+
+#Optional Cleanup
+aws iam detach-user-policy \
+  --user-name DevOpsUser \
+  --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+
+aws iam detach-group-policy \
+  --group-name DevOpsGroup \
+  --policy-arn arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+
+aws iam detach-role-policy \
+  --role-name DevOpsRole \
+  --policy-arn arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
