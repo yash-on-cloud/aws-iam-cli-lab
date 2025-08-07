@@ -6,7 +6,7 @@ aws iam create-user --user-name devops-lab-user
 aws iam add-user-to-group --user-name devops-lab-user --group-name devops-lab-group
 
 #Step 3: Attach Policy to Group
-Let’s attach PowerUserAccess for now (you can later restrict to custom scope):
+#Let’s attach PowerUserAccess for now (you can later restrict to custom scope):
 aws iam attach-group-policy \
   --group-name devops-lab-group \
   --policy-arn arn:aws:iam::aws:policy/PowerUserAccess
